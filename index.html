@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轮播图</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            border: 0;
+        }
+        #app{
+            width: 500px;
+            position: relative;
+            margin: 100px auto;
+        }
+        .center{
+            width: 500px;
+            height: 350px;
+            overflow: hidden;
+        }
+        .center ul{
+            width: 2500px;
+        }
+        .center li{
+            width: 500px;
+            height: 350px;
+            float: left;
+        }
+        img{
+            width: 500px;
+            height: 350px;
+        }
+        .center ol {
+            position: absolute;
+            right: 175px;
+            bottom: 10px;
+            line-height: 20px;
+            text-align: center;
+        }
+        .center ol li{
+            float: left;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="center">
+        <ul>
+            <li><a href="#"><img src="./images/1.jpg" alt="#"></a></li>
+            <li><a href="#"><img src="./images/2.jpg" alt="#"></a></li>
+            <li><a href="#"><img src="./images/3.jpg" alt="#"></a></li>
+            <li><a href="#"><img src="./images/4.jpg" alt="#"></a></li>
+            <li><a href="#"><img src="./images/1.jpg" alt="#"></a></li>
+        </ul>
+        <ol>
+            <li style="background-color: skyblue"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ol>
+    </div>
+</div>
+<script>
+    window.onload=function() {
+        let banner = document.getElementsByTagName('div')[0];
+        let width = banner.offsetWidth;
+        let allLi = document.querySelectorAll('ol > li');
+        let ul = document.getElementsByTagName('ul')[0];
+        let index = 0;
+        let timer = null;
+
+        function start() {
+            timer = setInterval(function () {
+                index++;
+                for (let i = 0; i < allLi.length; i++) {
+                    if (index === i) {
+                        allLi[i].style.backgroundColor = 'skyblue';
+                    } else if (index === 4) {
+                        allLi[0].style.backgroundColor = 'skyblue';
+                        allLi[3].style.backgroundColor = 'white';
+                    } else {
+                        allLi[i].style.backgroundColor = 'white';
+                    }
+                }
+                ul.style.transform = 'translateX(' + (-index * width) + 'px)';
+                ul.style.transition = 'all 0.2s';
+                ul.addEventListener('transitionend', function () {
+                    if (index === 4) {
+                        index = 0;
+                        ul.style.transition = 'none';
+                        ul.style.transform = 'translateX(' + (-index * width) + 'px)';
+                    }
+                });
+            }, 2000)
+        }
+
+        start();
+        banner.onmouseover = function () {
+            if (timer) {
+                clearInterval(timer);
+            }
+        };
+        banner.onmouseout = function () {
+            start();
+        };
+    }
+</script>
+</body>
+</html>
